@@ -1,0 +1,78 @@
+Équipe no13:
+Marie Courgnaud-Widehem
+Salya Diallo
+
+
+
+REPONSES
+POO
+
+
+
+
+[Question P1.1]: Comment représentez-vous ces vecteurs ? Comment sont-ils organisés : quels attributs ? quelles méthodes ? quels droits d'accès ?
+	On représente les vecteurs 2D grâce à leur coordonnée x (abscisse) et y (ordonnée), qui sont donc les attributs de la classe Vecteur2D (donc en privée). 
+	Les méthodes set_coord( ), affiche( ) et compare( ) sont toutes les trois publiques puisqu’elles doivent être accessibles dans le main pour tester le programme. 
+
+
+[Question P4.1]: Avez-vous ajouté un constructeur de copie ? Pourquoi (justifiez votre choix) ?
+	Dans le cas du vecteur2D, il ne semble pas nécessaire d'ajouter une constructeur de copie, en effet il en existe un par défaut automatiquement généré par le compilateur, ce constructeur opérant une initialisation membre à membre des attributs ici abscisse et ordonnée, dans ce cas, une copie de surface est donc amplement suffisante puisque le constructeur par défaut réalise exactement l'initialisation membre à membre que nous aurions écrit explicitement.
+
+
+[Question P4.2]: Si l'on souhaitait ajouter un constructeur par coordonnées polaires (un angle et une longueur),
+a] que cela impliquerait-il au niveau des attributs de la classe ?
+b] quelle serait la difficulté majeure (voire l'impossibilité) de sa réalisation en C++ ? (C'est d'ailleurs pour cela qu'on ne vous demande pas de faire un tel constructeur !)
+
+	A.  Au niveau des attributs il faudrait vérifier  que les coordonnées theta et phi appartiennent bien à [0, 2pi[x [0, pi[x [0, inf[.
+	B.  L’ajout d'un constructeur par coordonnées polaires impliquerait que l’on aurait 2 constructeurs pour Vecteur 2D  qui prendrait les mêmes arguments. Cela n’est pas possible en C++, le programme ne saurait pas quel constructeur appelé car on ne peut pas surcharger les constructeurs s’ils prennent  les mêmes attributs.
+
+[Question P6.1]: A ce stade, quels sont les attributs, méthodes et constructeurs de votre classe ChampPotentiel ?
+	
+	À ce stade du programme, les attributs sont le nombre de « cubes » contenus dans chaque direction Nx, Ny et Nz (des unsigned int) ainsi que le « pas d’échantillonage » lambda (un double) ainsi qu’un vector de vector de vector de Potentiels, étant donné que ChampPotentiel est une collection de Potentiels. Ces attributs suffisent étant donné que les longueurs des cotés de la boîte dépendent du nombre de cubes dans chaque direction et de lambda.
+	Quant aux méthodes, on en aura une calculant les potentiels pour le moment. On crée aussi un constructeur qui initialise par défaut chaque attribut à 0.0 et les tailles du tableau de Potentiel à Nx, Ny et Nz.
+
+
+
+
+
+[Question P7.1]: Dans votre conception, la méthode iteration() est-elle public, protected ou private ?
+	Selon moi, la méthode iteration( ) est private étant donné qu’on l’applique grâce à la méthode suivante (i.e resolution( ) ).
+
+
+[Question P7.2]: Dans votre conception, comment/où est représenté le paramètre ε de l'équation (6) ?
+	Nous avons mis epsilon comme un attribut private constant statique de la classe ChampPotentiel initialisé ici à 0.1, pour qu’on puisse l’utiliser dans toute la classe.
+
+
+[Question P7.3]: Dans votre conception, les méthodes resolution() et vitesse() sont-elles public, protected ou private ?
+	Selon moi, les méthodes resolution( ) et vitesse( ) sont publics étant donné qu’elles ont des arguments que l’on doit initialiser dans le main.
+
+
+
+
+[Question P8.1]: Que vous inspire le paragraphe précédent ? Cela introduit-il d'autres classes ? Cela modifie-t-il votre conception précédente ? Si oui, comment et pourquoi ?
+	On remarque que la classe Ciel, tout comme la classe Champ potentiel possède les mêmes caratéristiques en tant que collection 3D l'une de cubes d'air et l'autre de potentiels, ainsi, il serait avantageux de créer une super classe Boite3D contenant le nombre de cubes dans chaque direction ainsi que le pas d'échantillonage. Les classes Ciel et ChampPotentiel deviennent ainsi des sous-classes de la super classe Boite3D.
+
+[Question P8.2] : Parmi les grandeurs citées ci-dessus, lesquelles représentez-vous sous forme d'attributs et lesquelles sous forme de méthodes ?
+	Nous avons choisi de mettre toutes les constantes (gravité, gaz parfait, masse molaire de l’air sec, la masse molaire de la vapeur d’eau et P-ref) dans le fichier constantes.h. Les constantes P-inf, v-inf et t-inf sont mises en attributs ainsi que le taux d’humidité et la hauteur z des cubes d’air pour le calcul de l’enthalpie. Enfin il a été décidé de mettre en méthodes l’enthalpie, l’enthalpie infini, la température, le pression,  la pression partielle de vapeur d’eau, la pression de vapeur saturante d’eau et la constante de Bernouilli.
+  
+
+[Question P9.1]: En termes de POO, quelle est donc la nature de la méthode dessine_sur() ?
+	La méthode dessine_sur devra être de nature Virtual puisque l'on précise que chaque dessin est spécifique à l'objet dessiné, la Virtual permettra donc une résolution dynamique des liens. Compte tenu de la remarque "attention", il faudra même la mettre en méthode virtuelle pure dans la classe Dessinable.
+
+
+[Question P9.2]: Quelle est la bonne façon de le faire dans un cadre de programmation orientée-objet ?
+	On remarque que la classe Systeme possèdera peut-être différentes sortes de montagnes ayant chacune des manières différentes de calculer leur altitude, ainsi nous aurons un comportement polymorphique des éléments et ainsi utiliser des pointeurs.
+
+[Question P9.3]: A quoi faut-il faire attention pour les classes contenant des pointeurs ? Quelles solutions peut-on envisager ?
+	Pour une classe possédant des pointeurs il faut faire attention à la régle des 3 ainsi qu’à delete tous les pointeurs. On peut comme solution utiliser des smart pointeurs et ainsi éviter de se charger de delete et d’avoir à toucher au constructeur par défaut.
+
+[Question P9.4]:  Comment représentez vous la classe Systeme ? Expliquez votre conception (attributs, interface, ...).
+
+	La classe système, qui est une sous classe de dessinable, possède un constructeur dans lequel sont présent un champ et une MontagneGaussienne mis en référence constante. On procède à une allocation dynamique du champ potentiel et de la montagne, les attributs de cette classe étant des unique-ptr pour le champ et la montagne. Système prend aussi un ciel en attribut, il a été choisi de ne pas mettre de pointeur dessus cela n’étant pas essentiel. Le système utilise enfin le destructeur par défaut et le constructeur par défaut de la classe n’a pas besoin d’être modifié car on utilise des smart pointeurs. Enfin il a été ajouté toutes les méthodes nécessaires au bon fonctionnement de la classe en public ainsi qu’une surcharge de l’opérateur « << « pour l’affichage.
+
+[Question P12.1] : Comment représentez-vous ces nouveaux objets « chaînes de montagnes » ? Où s'incrivent-ils dans votre conception ? Quelle(s) classe(s) avez vous ajoutée(s) ? Cela change-t-il quelques choses aux montagnes que vous avez conçues jusqu'ici ?
+	Il a été choisi de modifier légèrement la conception en ajoutant une classe abstraite SuperMontagne ne prenant que les méthodes virtuelles pures :altitude et affiche. Ces dernières sont overrides dans les classes MontagneGaussienne (anciennement Montagne, nous les avons renommées lors de la modification de la conception de chaînes de montagnes) et chaînes de montagnes qui sont toutes les deux des SuperMontagnes. Enfin, une chaine de montagnes est définie comme un vecteur de pointeurs sur des SuperMontagne c’est à dire qu’il pourra prendre en paramètre des montagnes gaussiennes ou alors des montagnes toute simples( qui ne sont pas explicitées dans ce projet). 
+
+
+
+		
