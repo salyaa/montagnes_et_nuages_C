@@ -1,4 +1,4 @@
-# Projet de Programmation Orientée objet, CS-112
+# Projet de Programmation Orientée objet: CS-112 Programmation Orientée Objet
 ## Projet de deuxième semestre, réalisé par Salya Diallo et Marie Widehem-Courgnaud
 
 
